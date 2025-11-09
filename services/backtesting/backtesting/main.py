@@ -1,19 +1,25 @@
-# backtesting/main.py
+# services/backtesting/main.py
 
-from fastapi import FastAPI # type: ignore
-from shared.messaging.protocols import build_messaging_client
+from fastapi import FastAPI
+from contextlib import asynccontextmanager
+from config import Settings
 from shared.messaging.protocols import MessagingClient
 
-app = FastAPI()
+settings = Settings()
 messaging_client: MessagingClient | None = None
 
-@app.on_event("startup")
-async def startup():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     global messaging_client
-    messaging_client = await build_messaging_client()
-    await messaging_client.start()
 
-@app.on_event("shutdown")
-async def shutdown():
+    # STARTUP
+    messaging_client = await settings.init_messaging_client()
+
+    yield  # ⬅️ App runs while inside this block
+
+    # SHUTDOWN
     if messaging_client:
         await messaging_client.stop()
+
+# 👇 This replaces on_event
+app = FastAPI(lifespan=lifespan)

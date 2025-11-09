@@ -140,6 +140,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pedantic"
+version = "2.3.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/36/d2/4aa284089b3002757546739189e553ff44f135b4f89fb4d4e0a245276e83/pedantic-2.3.1.tar.gz", hash = "sha256:0db6973a0e63e596b29231dc4918462080ff812e3712a4180771d92f41c5c52b", size = 80822, upload-time = "2025-10-14T13:04:34.831Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ed/99/23e02c9d8726edb36133889bf49e85b624ef0c75fdeb8d57f33d19b716fa/pedantic-2.3.1-py3-none-any.whl", hash = "sha256:1c13da1dfb1b7800a9339a41e662f233f52ea5bdd24e608a03f96de6f3da0628", size = 116973, upload-time = "2025-10-14T13:04:33.74Z" },
+]
+
+[[package]]
 name = "pydantic"
 version = "2.12.4"
 source = { registry = "https://pypi.org/simple" }
@@ -236,10 +245,16 @@ version = "0.1.0"
 source = { editable = "shared" }
 dependencies = [
     { name = "aiokafka" },
+    { name = "pedantic" },
+    { name = "pydantic" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "aiokafka", specifier = ">=0.12.0" }]
+requires-dist = [
+    { name = "aiokafka", specifier = ">=0.12.0" },
+    { name = "pedantic", specifier = ">=2.3.1" },
+    { name = "pydantic", specifier = ">=2.12.4" },
+]
 
 [[package]]
 name = "sniffio"
