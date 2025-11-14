@@ -1,0 +1,10 @@
+messaging:
+  backend: kafka
+  kafka:
+    bootstrap_servers: "localhost:9092"
+    topic: "example-topic"
+    group_id: "example-group"
+    security_protocol: "PLAINTEXT"
+    sasl_mechanism: null
+    username: null
+    password: null
