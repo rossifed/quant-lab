@@ -82,12 +82,14 @@ version = "0.1.0"
 source = { virtual = "services/backtesting" }
 dependencies = [
     { name = "fastapi" },
+    { name = "pydantic" },
     { name = "shared" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = ">=0.121.1" },
+    { name = "pydantic", specifier = ">=2.12.4" },
     { name = "shared", editable = "shared" },
 ]
 
@@ -177,7 +179,6 @@ version = "0.1.0"
 source = { virtual = "services/optimization" }
 dependencies = [
     { name = "fastapi" },
-    { name = "pedantic" },
     { name = "pydantic" },
     { name = "shared" },
 ]
@@ -185,7 +186,6 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = ">=0.121.1" },
-    { name = "pedantic", specifier = ">=2.3.1" },
     { name = "pydantic", specifier = ">=2.12.4" },
     { name = "shared", editable = "shared" },
 ]
@@ -206,15 +206,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/ca/bc/f35b8446f4531a7cb215605d100cd88b7ac6f44ab3fc94870c120ab3adbf/pathspec-0.12.1.tar.gz", hash = "sha256:a482d51503a1ab33b1c67a6c3813a26953dbdc71c31dacaef9a838c4e29f5712", size = 51043, upload-time = "2023-12-10T22:30:45Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/cc/20/ff623b09d963f88bfde16306a54e12ee5ea43e9b597108672ff3a408aad6/pathspec-0.12.1-py3-none-any.whl", hash = "sha256:a0d503e138a4c123b27490a4f7beda6a01c6f288df0e4a8b79c7eb0dc7b4cc08", size = 31191, upload-time = "2023-12-10T22:30:43.14Z" },
-]
-
-[[package]]
-name = "pedantic"
-version = "2.3.1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/36/d2/4aa284089b3002757546739189e553ff44f135b4f89fb4d4e0a245276e83/pedantic-2.3.1.tar.gz", hash = "sha256:0db6973a0e63e596b29231dc4918462080ff812e3712a4180771d92f41c5c52b", size = 80822, upload-time = "2025-10-14T13:04:34.831Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/ed/99/23e02c9d8726edb36133889bf49e85b624ef0c75fdeb8d57f33d19b716fa/pedantic-2.3.1-py3-none-any.whl", hash = "sha256:1c13da1dfb1b7800a9339a41e662f233f52ea5bdd24e608a03f96de6f3da0628", size = 116973, upload-time = "2025-10-14T13:04:33.74Z" },
 ]
 
 [[package]]
@@ -379,20 +370,22 @@ source = { editable = "shared" }
 dependencies = [
     { name = "aiokafka" },
     { name = "dependency-injector" },
+    { name = "fastapi" },
     { name = "mypy" },
-    { name = "pedantic" },
     { name = "pyaml" },
     { name = "pydantic" },
+    { name = "starlette" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "aiokafka", specifier = ">=0.12.0" },
     { name = "dependency-injector", specifier = ">=4.48.2" },
+    { name = "fastapi", specifier = ">=0.121.1" },
     { name = "mypy", specifier = ">=1.18.2" },
-    { name = "pedantic", specifier = ">=2.3.1" },
     { name = "pyaml", specifier = ">=25.7.0" },
     { name = "pydantic", specifier = ">=2.12.4" },
+    { name = "starlette", specifier = ">=0.49.3" },
 ]
 
 [[package]]

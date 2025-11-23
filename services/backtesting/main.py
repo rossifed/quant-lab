@@ -2,8 +2,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from shared import configure_services
 from shared.messaging.kafka import KafkaMessagingClient
-from services.optimization.settings import Settings
-from services.optimization.api.endpoints import router
+from services.backtesting.settings import Settings
+from services.backtesting.api.endpoints import router
 
 
 settings = Settings()

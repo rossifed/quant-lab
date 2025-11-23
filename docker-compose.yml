@@ -1,14 +1,5 @@
 services:
-  backtesting:
-    build: ./services/backtesting
-    networks:
-      - quant-lab-net
-
-  optimization:
-    build: ./services/optimization
-    networks:
-      - quant-lab-net
-      
+  # Infrastructure
   redpanda:
     image: redpandadata/redpanda:latest
     container_name: redpanda
@@ -23,10 +14,54 @@ services:
         --kafka-addr PLAINTEXT://0.0.0.0:9092
         --advertise-kafka-addr PLAINTEXT://redpanda:9092
     ports:
-      - "9092:9092"   # Port Kafka (pour les clients)
-      - "9644:9644"   # Port Admin API (monitoring, introspection)
+      - "9092:9092"   # Kafka port
+      - "9644:9644"   # Admin API
     networks:
       - quant-lab-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9644/v1/status/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Microservices
+  optimization:
+    build: 
+      context: .
+      dockerfile: ./services/optimization/Dockerfile
+    container_name: optimization-service
+    ports:
+      - "8001:8000"
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=redpanda:9092
+      - KAFKA_TOPIC=optimization-events
+      - KAFKA_GROUP_ID=optimization-group
+      - LOG_LEVEL=INFO
+    depends_on:
+      redpanda:
+        condition: service_healthy
+    networks:
+      - quant-lab-net
+    restart: unless-stopped
+
+  backtesting:
+    build:
+      context: .
+      dockerfile: ./services/backtesting/Dockerfile
+    container_name: backtesting-service
+    ports:
+      - "8002:8000"
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=redpanda:9092
+      - KAFKA_TOPIC=backtesting-events
+      - KAFKA_GROUP_ID=backtesting-group
+      - LOG_LEVEL=INFO
+    depends_on:
+      redpanda:
+        condition: service_healthy
+    networks:
+      - quant-lab-net
+    restart: unless-stopped
 
 networks:
   quant-lab-net:

@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "dependency-injector>=4.48.2",
+    "uvicorn>=0.34.0",
 ]
 
 [tool.uv.workspace]
