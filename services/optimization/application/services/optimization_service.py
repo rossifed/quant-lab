@@ -15,7 +15,9 @@ class DummyOptimizationService(OptimizationService):
         self.logger = logger
 
     async def optimize(self) -> str:
+        
         return "hello World"
     
     async def hello_world(self) -> str:
+        self.logger.info("Test Logger.Hello World Requested. ")
         return "Hello World from OptimizationService!"

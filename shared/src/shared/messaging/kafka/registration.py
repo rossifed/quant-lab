@@ -5,6 +5,7 @@ from shared.messaging.kafka.kafka_message_broker import KafkaMessageBroker
 from shared.messaging.kafka.kafka_messaging_client import KafkaMessagingClient
 from shared.messaging.kafka.kafka_message_consumer import KafkaMessageConsumer
 from shared.messaging.kafka.kafka_settings import KafkaSettings
+from shared.messaging.message_router import MessageRouter
 from typing import Any
 
 
@@ -36,7 +37,6 @@ def add_kafka_messaging(container: DIContainer, settings: KafkaSettings) -> None
     container.add_singleton(
         AIOKafkaConsumer,
         lambda: AIOKafkaConsumer(  # type: ignore[arg-type]
-            settings.topic,
             **consumer_kwargs
         )
     )
@@ -45,12 +45,13 @@ def add_kafka_messaging(container: DIContainer, settings: KafkaSettings) -> None
     container.add_singleton(
         KafkaMessageBroker,
         lambda: KafkaMessageBroker(
-            producer=container.resolve(AIOKafkaProducer)
+            producer=container.resolve(AIOKafkaProducer),
+            default_topic=settings.topic
         )
     )
 
     container.add_singleton(
-        MessageBroker,
+        MessageBroker,  # type: ignore[type-abstract]
         lambda: container.resolve(KafkaMessageBroker)
     )
 
@@ -63,7 +64,7 @@ def add_kafka_messaging(container: DIContainer, settings: KafkaSettings) -> None
     )
 
     container.add_singleton(
-        MessagingClient,
+        MessagingClient,  # type: ignore[type-abstract]
         lambda: container.resolve(KafkaMessagingClient)
     )
 
@@ -71,5 +72,12 @@ def add_kafka_messaging(container: DIContainer, settings: KafkaSettings) -> None
         KafkaMessageConsumer,
         lambda: KafkaMessageConsumer(
             consumer=container.resolve(AIOKafkaConsumer)
+        )
+    )
+
+    container.add_singleton(
+        MessageRouter,
+        lambda: MessageRouter(
+            consumer=container.resolve(KafkaMessageConsumer)
         )
     )

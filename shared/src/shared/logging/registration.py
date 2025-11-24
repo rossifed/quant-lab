@@ -10,5 +10,5 @@ def add_logging(container: DIContainer, settings: LoggingSettings) -> None:
         level=getattr(logging, settings.level),
         format=settings.format
     )
-    container.add_singleton(Logger,
+    container.add_singleton(Logger,# type: ignore[type-abstract]
                             lambda: LoggingAdapter(name=settings.app_name))

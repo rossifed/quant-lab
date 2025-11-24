@@ -7,8 +7,11 @@ from .protocols import (
     AsyncMessageDispatcher,
     ModuleClient,
     MessagingSettings,
+    MessageHandler,
+    MessageConsumer,
 )
 from .registration import add_messaging
+from .message_router import MessageRouter
 
 __all__ = [
     "Message",
@@ -19,5 +22,8 @@ __all__ = [
     "AsyncMessageDispatcher",
     "ModuleClient",
     "MessagingSettings",
+    "MessageHandler",
+    "MessageConsumer",
     "add_messaging",
+    "MessageRouter",
 ]

@@ -9,6 +9,8 @@ class KafkaMessageConsumer:
 
     def register_handler(self, topic: str, handler: Callable[[str], Awaitable[None]]) -> None:
         self._handlers[topic] = handler
+        # Update consumer subscription with all registered topics
+        self._consumer.subscribe(topics=list(self._handlers.keys()))
 
     async def consume(self) -> None:
         async for message in self._consumer:  # type: ignore[var-annotated]
