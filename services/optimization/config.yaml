@@ -1,0 +1,14 @@
+app:
+  name: "optimization-service"
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+
+messaging:
+  backend: "kafka"
+  kafka:
+    bootstrap_servers: "redpanda:9092"
+    topic: "optimization-events"
+    group_id: "optimization-group"
+    security_protocol: "PLAINTEXT"
