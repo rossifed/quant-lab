@@ -4,6 +4,7 @@ from shared import configure_services
 from shared.messaging.kafka import KafkaMessagingClient
 from services.optimization.settings import Settings
 from services.optimization.api.endpoints import router
+from services.optimization.registration import register_services
 
 
 settings = Settings()
@@ -17,6 +18,9 @@ container = configure_services(
     logging_settings=settings.get_logging_settings(),
     messaging_settings=settings.get_kafka_settings()
 )
+
+# Enregistrer tous les services de l'application (infra, domain, app, api)
+register_services(container)
 
 
 @asynccontextmanager

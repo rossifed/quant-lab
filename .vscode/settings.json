@@ -2,5 +2,6 @@
     "python-envs.pythonProjects": [],
     "python.analysis.extraPaths": [
         "./shared/src/di"
-    ]
+    ],
+    "python-envs.defaultEnvManager": "ms-python.python:system"
 }
