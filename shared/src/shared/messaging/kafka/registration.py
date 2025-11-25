@@ -1,9 +1,10 @@
 from aiokafka import AIOKafkaProducer, AIOKafkaConsumer  # type: ignore
 from shared.di.protocols import DIContainer
-from shared.messaging.protocols import MessageBroker, MessagingClient
+from shared.messaging.protocols import MessageBroker, MessagingClient, MessagePublisher
 from shared.messaging.kafka.kafka_message_broker import KafkaMessageBroker
 from shared.messaging.kafka.kafka_messaging_client import KafkaMessagingClient
 from shared.messaging.kafka.kafka_message_consumer import KafkaMessageConsumer
+from shared.messaging.kafka.kafka_message_publisher import KafkaMessagePublisher
 from shared.messaging.kafka.kafka_settings import KafkaSettings
 from shared.messaging.message_router import MessageRouter
 from typing import Any
@@ -73,6 +74,18 @@ def add_kafka_messaging(container: DIContainer, settings: KafkaSettings) -> None
         lambda: KafkaMessageConsumer(
             consumer=container.resolve(AIOKafkaConsumer)
         )
+    )
+
+    container.add_singleton(
+        KafkaMessagePublisher,
+        lambda: KafkaMessagePublisher(
+            producer=container.resolve(AIOKafkaProducer)
+        )
+    )
+
+    container.add_singleton(
+        MessagePublisher,  # type: ignore[type-abstract]
+        lambda: container.resolve(KafkaMessagePublisher)
     )
 
     container.add_singleton(

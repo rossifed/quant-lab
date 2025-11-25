@@ -87,5 +87,23 @@ class MessageConsumer(Protocol):
 
 
 @runtime_checkable
+class MessagePublisher(Protocol):
+    """Protocol for message publishers.
+    
+    Generic abstraction for publishing messages to channels (topics/queues/streams).
+    """
+    
+    async def publish(self, channel: str, message: dict, message_type: str) -> None:
+        """Publish a message to a channel.
+        
+        Args:
+            channel: The channel to publish to (topic/queue/stream)
+            message: The message payload as a dictionary
+            message_type: The type of message being published
+        """
+        ...
+
+
+@runtime_checkable
 class MessagingSettings(Protocol):
     def get_backend(self) -> str: ...

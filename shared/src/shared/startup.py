@@ -8,6 +8,7 @@ from shared.logging import add_logging, LoggingSettings
 from shared.middleware import add_middleware
 from shared.messaging import add_messaging, MessageRouter, MessageHandler
 from shared.messaging.protocols import MessagingSettings, MessagingClient
+from shared.ray import initialize_ray_cluster
 
 
 _container: Optional[DIContainer] = None
@@ -124,6 +125,11 @@ def create_lifespan(container: DIContainer):  # type: ignore[no-untyped-def]
         # Startup: resolve services using protocols (not concrete implementations)
         messaging_client = container.resolve(MessagingClient)  # type: ignore[type-abstract]
         message_router = container.resolve(MessageRouter)
+        
+        # Initialize Ray cluster connection at startup (process-global singleton)
+        from shared.logging.protocols import Logger
+        logger = container.resolve(Logger)
+        initialize_ray_cluster(logger)
         
         await messaging_client.start()
         await message_router.start_all()

@@ -24,6 +24,29 @@ services:
       timeout: 5s
       retries: 5
 
+  # Ray Cluster - Compute Layer
+  ray-head:
+    image: rayproject/ray:2.39.0-py312
+    container_name: ray-head
+    command: >
+      ray start --head
+        --port=6379
+        --dashboard-host=0.0.0.0
+        --dashboard-port=8265
+        --num-cpus=6
+        --block
+    ports:
+      - "8265:8265"   # Ray Dashboard
+      - "10001:10001" # Ray Client
+    networks:
+      - quant-lab-net
+    shm_size: 2gb
+    healthcheck:
+      test: ["CMD", "ray", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   # Microservices
   optimization:
     build: 
@@ -37,8 +60,11 @@ services:
       - KAFKA_TOPIC=optimization-events
       - KAFKA_GROUP_ID=optimization-group
       - LOG_LEVEL=INFO
+      - RAY_ADDRESS=ray://ray-head:10001
     depends_on:
       redpanda:
+        condition: service_healthy
+      ray-head:
         condition: service_healthy
     networks:
       - quant-lab-net

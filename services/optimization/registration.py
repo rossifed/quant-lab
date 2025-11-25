@@ -4,7 +4,7 @@ from services.optimization.infrastructure.registration import register_infrastru
 from services.optimization.domain.registration import register_domain_services
 from services.optimization.application.registration import register_application_services
 from services.optimization.api.registration import register_api_services
-from services.optimization.application.handlers.backtest_handler import BacktestMessageHandler
+from services.optimization.application.handlers.backtest_sliced_handler import BacktestSlicedHandler
 
 
 def register_services(container: DIContainer) -> None:
@@ -16,6 +16,6 @@ def register_services(container: DIContainer) -> None:
     # Register message handlers
     register_message_handler(
         channel="backtesting-events",
-        message_type="BacktestCompletedEvent",
-        handler_class=BacktestMessageHandler
+        message_type="BacktestSliced",
+        handler_class=BacktestSlicedHandler
     )

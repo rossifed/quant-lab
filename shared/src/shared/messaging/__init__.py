@@ -9,6 +9,7 @@ from .protocols import (
     MessagingSettings,
     MessageHandler,
     MessageConsumer,
+    MessagePublisher,
 )
 from .registration import add_messaging
 from .message_router import MessageRouter
